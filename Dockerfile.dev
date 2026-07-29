@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1
+
+# Development image for docker-compose. For production deploys, see Dockerfile.
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+ARG RUBY_VERSION=3.2.2
+FROM docker.io/library/ruby:$RUBY_VERSION-slim
+
+WORKDIR /rails
+
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips libyaml-dev pkg-config postgresql-client && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+ENV RAILS_ENV="development"
+
+# Install all gems, including development and test groups
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Source code is expected to be volume-mounted over /rails by docker-compose,
+# so edits on the host apply instantly. This COPY only serves standalone use.
+COPY . .
+
+EXPOSE 3000
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]

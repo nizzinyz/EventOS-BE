@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   db:
     image: postgres:15
@@ -6,3 +5,23 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails db:prepare && bin/rails server -b 0.0.0.0"
+    ports:
+      - "3000:3000"
+    environment:
+      # Database name comes from config/database.yml (eos_venues_be_development)
+      DATABASE_URL: postgres://postgres:password@db:5432
+    volumes:
+      - .:/rails
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
