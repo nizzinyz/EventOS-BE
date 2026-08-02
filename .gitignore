@@ -10,7 +10,6 @@
 # Ignore all environment files except the committed template.
 /.env
 /.env.*
-!/.env.example
 
 # Ignore all logfiles and tempfiles.
 /log/*
