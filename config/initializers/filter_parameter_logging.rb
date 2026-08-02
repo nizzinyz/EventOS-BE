@@ -4,5 +4,14 @@
 # Use this to limit dissemination of sensitive information.
 # See the ActiveSupport::ParameterFilter documentation for supported notations and behaviors.
 Rails.application.config.filter_parameters += [
-  :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc
+  # Credentials / secrets
+  :passw, :secret, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc,
+  # PII — personal identifiers
+  :email, :first_name, :last_name, :name,
+  # Auth tokens (JWT, OAuth)
+  :token, :access_token, :refresh_token, :id_token, :authorization,
+  # OAuth callback URL params (user= is JSON with email/name)
+  :user,
+  # OAuth provider raw payload stored in oauth_identities (duplicates PII)
+  :raw_info
 ]

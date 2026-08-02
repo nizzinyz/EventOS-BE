@@ -40,5 +40,18 @@ module EosVenuesBe
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # ── Active Record encryption (PII columns on users / oauth_identities) ──
+    # Keys are injected via ENV; run `bin/rails db:encryption:init` to generate fresh values.
+    config.active_record.encryption.primary_key         = ENV["ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY"]
+    config.active_record.encryption.deterministic_key   = ENV["ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY"]
+    config.active_record.encryption.key_derivation_salt = ENV["ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"]
+    # Allow reading plaintext rows written before encryption was enabled.
+    config.active_record.encryption.support_unencrypted_data = true
+
+    # OmniAuth needs a rack session for its CSRF state parameter, which
+    # api_only mode strips out — add cookie session middleware back in.
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_eos_venues_session"
   end
 end
