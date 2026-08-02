@@ -28,6 +28,25 @@ Things you may want to cover:
 The only prerequisite is Docker (with the compose plugin), no local Ruby or
 Postgres needed.
 
+### First-time setup: create your `.env`
+
+```sh
+cp .env.example .env
+```
+
+Then generate the secrets that are blank in the template and paste them in:
+
+```sh
+openssl rand -hex 64   # → DEVISE_JWT_SECRET_KEY
+openssl rand -hex 16   # run 3x → the three ACTIVE_RECORD_ENCRYPTION_* values
+```
+
+The Google/Apple OAuth values are pre-filled with inert dev placeholders —
+everything except the actual third-party OAuth handshake works with them (see
+the comments in `.env.example`).
+
+### Start the stack
+
 ```sh
 docker compose up
 ```
