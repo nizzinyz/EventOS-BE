@@ -1,27 +1,14 @@
-# README
+# EOS Venues — backend API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 8 JSON API with JWT auth (Devise), Google/Apple OAuth, and encrypted
+PII columns, backed by Postgres. Active development happens on the
+`development` branch.
 
-Things you may want to cover:
-
-- Ruby version
-
-- System dependencies
-
-- Configuration
-
-- Database creation
-
-- Database initialization
-
-- How to run the test suite
-
-- Services (job queues, cache servers, search engines, etc.)
-
-- Deployment instructions
-
-- ...
+- **API reference:** [docs/user_api.md](docs/user_api.md) — all auth and user
+  routes with request/response examples. Auth lives under `/api/auth`
+  (note: registration is `POST /api/auth`, sessions are `POST /api/auth/sign_in`).
+- **Secrets:** everything comes from `.env` (see setup below);
+  `.env.example` documents every variable.
 
 ## Running with Docker
 
@@ -54,11 +41,25 @@ docker compose up
 This starts two containers: a Postgres 15 database and the Rails server. On
 boot the web container runs `bin/rails db:prepare` automatically, so the
 database is created, migrated, and seeded on first run. The app is then
-available at http://localhost:3000.
+available at http://localhost:3000 (health check: `GET /up`).
+
+After pulling changes that touch the `Gemfile` or Dockerfiles, rebuild the
+image:
 
 ```sh
 docker compose up --build
 ```
+
+### Connecting a client
+
+CORS is open in development for `http://localhost:3000`, `5173` (Vite),
+`8081` and `19006` (Expo) — no config needed for a client on those ports.
+If yours runs elsewhere, add it to `CORS_ALLOWED_ORIGINS` in `.env`, and set
+`FRONTEND_URL` to your client's URL so OAuth/email redirects land there.
+
+Postgres is published on host port **5433** (not 5432, to avoid clashing
+with a locally installed Postgres) if you want to inspect the database with
+host tools: `psql -h localhost -p 5433 -U postgres`.
 
 ### Common commands
 
