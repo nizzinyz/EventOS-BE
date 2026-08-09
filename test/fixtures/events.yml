@@ -1,0 +1,47 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  organizer_id: 1
+  organizer_name: MyString
+  venue: one
+  venue_name: MyString
+  category: MyString
+  city: MyString
+  province: MyString
+  address: MyString
+  start_at: 2026-08-09 17:57:25
+  end_at: 2026-08-09 17:57:25
+  image_url: MyString
+  video_url: MyString
+  price_from: 9.99
+  currency: MyString
+  attendee_count: 1
+  like_count: 1
+  save_count: 1
+  featured: false
+  status: MyString
+
+two:
+  title: MyString
+  description: MyText
+  organizer_id: 1
+  organizer_name: MyString
+  venue: two
+  venue_name: MyString
+  category: MyString
+  city: MyString
+  province: MyString
+  address: MyString
+  start_at: 2026-08-09 17:57:25
+  end_at: 2026-08-09 17:57:25
+  image_url: MyString
+  video_url: MyString
+  price_from: 9.99
+  currency: MyString
+  attendee_count: 1
+  like_count: 1
+  save_count: 1
+  featured: false
+  status: MyString

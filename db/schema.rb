@@ -10,9 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_31_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_09_175725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string "address", null: false
+    t.integer "attendee_count", default: 0, null: false
+    t.string "category", null: false
+    t.string "city", null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "ZAR", null: false
+    t.text "description"
+    t.datetime "end_at"
+    t.boolean "featured", default: false, null: false
+    t.string "image_url"
+    t.integer "like_count", default: 0, null: false
+    t.integer "organizer_id"
+    t.string "organizer_name", null: false
+    t.decimal "price_from", precision: 12, scale: 2, default: "0.0", null: false
+    t.string "province"
+    t.integer "save_count", default: 0, null: false
+    t.datetime "start_at", null: false
+    t.string "status", default: "draft", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "venue_id"
+    t.string "venue_name", null: false
+    t.string "video_url"
+    t.index ["category"], name: "index_events_on_category"
+    t.index ["city"], name: "index_events_on_city"
+    t.index ["featured"], name: "index_events_on_featured"
+    t.index ["organizer_id"], name: "index_events_on_organizer_id"
+    t.index ["start_at"], name: "index_events_on_start_at"
+    t.index ["status"], name: "index_events_on_status"
+    t.index ["venue_id"], name: "index_events_on_venue_id"
+  end
 
   create_table "oauth_identities", force: :cascade do |t|
     t.text "access_token"
@@ -66,5 +99,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_000002) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "venues", force: :cascade do |t|
+    t.string "address", null: false
+    t.text "amenities", default: [], array: true
+    t.boolean "available", default: true, null: false
+    t.integer "capacity", default: 0, null: false
+    t.text "categories", default: [], array: true
+    t.string "city", null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "ZAR", null: false
+    t.text "description"
+    t.boolean "featured", default: false, null: false
+    t.string "image_url"
+    t.string "name", null: false
+    t.integer "owner_id"
+    t.decimal "price_from", precision: 12, scale: 2, default: "0.0", null: false
+    t.string "province"
+    t.decimal "rating", precision: 3, scale: 2, default: "0.0"
+    t.integer "review_count", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["available"], name: "index_venues_on_available"
+    t.index ["city"], name: "index_venues_on_city"
+    t.index ["featured"], name: "index_venues_on_featured"
+    t.index ["owner_id"], name: "index_venues_on_owner_id"
+  end
+
+  add_foreign_key "events", "venues"
   add_foreign_key "oauth_identities", "users"
 end
