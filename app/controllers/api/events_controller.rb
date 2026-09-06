@@ -76,7 +76,17 @@ module Api
         :like_count,
         :save_count,
         :featured,
-        :status
+        :status,
+        poster_config: [
+          :template,
+          :palette,
+          :background,
+          :background_color,
+          :accent_color,
+          :background_image_url,
+          :tagline,
+          { highlights: [] }
+        ]
       )
     end
   end
