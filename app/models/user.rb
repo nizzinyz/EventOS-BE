@@ -28,9 +28,18 @@ class User < ApplicationRecord
 
   # ── Associations ─────────────────────────────────────────────────────────────
   has_many :oauth_identities, dependent: :destroy
+  has_many :event_reactions, dependent: :destroy
+  has_many :events, foreign_key: :organizer_id, dependent: :restrict_with_error
+  has_many :venues, foreign_key: :owner_id, dependent: :restrict_with_error
+  has_many :tickets, dependent: :restrict_with_error
+  has_many :venue_bookings, dependent: :restrict_with_error
+  has_many :orders, dependent: :restrict_with_error
+  has_many :booking_requests, dependent: :restrict_with_error
 
   # ── Validations ──────────────────────────────────────────────────────────────
   validates :first_name, :last_name, presence: true
+  validates :bio, length: { maximum: 1000 }
+  validates :city, length: { maximum: 100 }
 
   # ── Callbacks ────────────────────────────────────────────────────────────────
   before_validation :set_public_id, on: :create
@@ -55,6 +64,10 @@ class User < ApplicationRecord
     super && oauth_identities.none?
   end
 
+  def confirmation_required?
+    !LocalPreview.enabled? && super
+  end
+
   # Public-safe JSON representation used across all API responses.
   def api_attributes
     {
@@ -64,7 +77,12 @@ class User < ApplicationRecord
       last_name:        last_name,
       full_name:        full_name,
       avatar_url:       avatar_url,
+      bio: bio,
+      city: city,
+      interests: interests,
+      email_updates: email_updates,
       confirmed:        confirmed?,
+      confirmation_required: confirmation_required?,
       linked_providers: oauth_identities.map(&:provider),
       created_at:       created_at
     }

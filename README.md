@@ -1,5 +1,9 @@
 # EOS Venues — backend API
 
+- [MVP implementation checklist](docs/MVP_CHECKLIST.md)
+- [Local signup, mock checkout and maps](docs/LOCAL_TESTING.md)
+- [Marketplace API and verification](docs/marketplace_api.md)
+
 Rails 8 JSON API with JWT auth (Devise), Google/Apple OAuth, and encrypted
 PII columns, backed by Postgres. Active development happens on the
 `development` branch.

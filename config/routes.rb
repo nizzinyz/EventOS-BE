@@ -19,6 +19,17 @@ Rails.application.routes.draw do
 
   # ── API resources ────────────────────────────────────────────────────────────
   namespace :api do
+    resource :config, only: :show, controller: "config"
+    resources :orders, only: [:index, :create]
+    resources :events do
+      resources :check_ins, only: :create
+      resource :reaction, only: [:show, :update], controller: "event_reactions"
+    end
+    resources :venue_bookings, only: [:index, :create]
+    get "venues/:venue_id/slots", to: "venue_bookings#slots"
+    resources :venues
+    resources :tickets, only: [:index, :create]
+    resources :booking_requests, only: [:index, :create, :update]
     resources :users, only: [:show, :update, :destroy]
   end
 

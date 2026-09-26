@@ -18,8 +18,11 @@ module Api
 
     # DELETE /api/users/:id — a user may delete their own account.
     def destroy
-      @user.destroy!
-      head :no_content
+      if @user.destroy
+        head :no_content
+      else
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
     end
 
     private
@@ -36,7 +39,7 @@ module Api
       params.require(:user).permit(
         :first_name, :last_name,
         :date_of_birth,
-        :avatar_url
+        :avatar_url, :bio, :city, :email_updates, interests: []
       )
     end
   end

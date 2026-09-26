@@ -3,11 +3,14 @@ module Api
     class RegistrationsController < Devise::RegistrationsController
       respond_to :json
 
-      # POST /api/auth/sign_up
+      # POST /api/auth
       # Body: { user: { email, password, password_confirmation, first_name, last_name,
       #                 date_of_birth (opt) } }
       def create
-        super
+        build_resource(sign_up_params)
+        resource.save
+        # The client signs in through the JWT endpoint, without a cookie session.
+        respond_with(resource)
       end
 
       # PATCH/PUT /api/auth  (update own profile)
@@ -40,7 +43,7 @@ module Api
       end
 
       def respond_with(resource, _opts = {})
-        if resource.persisted?
+        if resource.persisted? && resource.errors.empty?
           render json: {
             status:  { code: 200, message: "Signed up successfully." },
             data:    resource.api_attributes
