@@ -1,7 +1,8 @@
 module Api
   class CheckInsController < ApplicationController
     def create
-      event = Event.where(organizer: current_user).find(params[:event_id])
+      event = Event.find(params[:event_id])
+      raise ActiveRecord::RecordNotFound, "Event not found" unless event.can_check_in?(current_user)
       code = params.require(:code).to_s.delete_prefix("roam-ticket:")
       event.with_lock do
         unless event.status == "published"

@@ -23,11 +23,19 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :create]
     resources :events do
       resources :check_ins, only: :create
+      resources :members, only: [:index, :create, :destroy], controller: "event_members"
       resource :reaction, only: [:show, :update], controller: "event_reactions"
     end
     resources :venue_bookings, only: [:index, :create]
     get "venues/:venue_id/slots", to: "venue_bookings#slots"
     resources :venues
+    resources :venues, only: [] do
+      resource :verification_submission, only: [:show, :create], controller: "venue_verification_submissions"
+    end
+    get "admin/users", to: "admin#users"
+    patch "admin/users/:id/role", to: "admin#update_user_role"
+    get "admin/verification_submissions", to: "admin#verification_submissions"
+    patch "admin/verification_submissions/:id/review", to: "admin#review_verification"
     resources :tickets, only: [:index, :create]
     resources :booking_requests, only: [:index, :create, :update]
     resources :users, only: [:show, :update, :destroy]

@@ -25,7 +25,7 @@ module Api
           end
           return render json: existing.api_attributes
         end
-        unless event.ticketing_enabled && event.status == "published" && (event.start_at > Time.current || (mode == "mock" && LocalPreview.enabled?))
+        unless event.access_type == "ticketed" && event.ticketing_enabled && event.status == "published" && (event.start_at > Time.current || (mode == "mock" && LocalPreview.enabled?))
           return render json: { error: "This event is not accepting reservations" }, status: :unprocessable_entity
         end
         if mode == "free" && (!event.price_from.zero? || outcome != "completed")

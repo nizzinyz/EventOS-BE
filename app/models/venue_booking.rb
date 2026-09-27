@@ -1,6 +1,7 @@
 class VenueBooking < ApplicationRecord
   belongs_to :venue
   belongs_to :user
+  has_one :event, dependent: :restrict_with_error
   before_validation { self.reference ||= SecureRandom.uuid }
   validates :request_key, :reference, :start_at, :end_at, presence: true
   validates :status, inclusion: { in: %w[completed declined cancelled] }

@@ -1,13 +1,13 @@
 module Api
   class EventsController < ApplicationController
     def index
-      events = Event.where(status: "published").or(Event.where(organizer: current_user))
+      events = Event.where(status: "published", visibility: "public").or(Event.where(organizer: current_user)).or(Event.where(id: EventMember.where(user: current_user).select(:event_id)))
       events = events.where(id: EventReaction.where(user: current_user, saved: true).select(:event_id)) if params[:saved] == "true"
       render json: events.includes(:organizer, :venue, :tickets, :event_reactions).order(start_at: :asc).map(&:api_attributes)
     end
 
     def show
-      event = Event.where(status: "published").or(Event.where(organizer: current_user)).find(params[:id])
+      event = Event.where(status: "published", visibility: "public").or(Event.where(organizer: current_user)).or(Event.where(id: EventMember.where(user: current_user).select(:event_id))).find(params[:id])
       render json: event.api_attributes
     end
 
@@ -17,7 +17,8 @@ module Api
     end
 
     def update
-      event = Event.where(organizer: current_user).find(params[:id])
+      event = Event.find(params[:id])
+      raise ActiveRecord::RecordNotFound, "Event not found" unless event.can_manage?(current_user)
       event.with_lock { event.update!(event_params) }
       render json: event.api_attributes
     end
@@ -36,9 +37,9 @@ module Api
     private
 
     def event_params
-      params.require(:event).permit(:title, :description, :venue_id, :venue_name, :category,
+      params.require(:event).permit(:title, :description, :venue_id, :venue_booking_id, :venue_name, :category,
         :city, :province, :address, :start_at, :end_at, :image_url, :video_url,
-        :ticketing_enabled, :latitude, :longitude, :price_from, :capacity, :status, poster_config: [ :template, :palette, :background,
+        :ticketing_enabled, :access_type, :age_rating, :visibility, :latitude, :longitude, :price_from, :capacity, :status, poster_config: [ :template, :palette, :background,
           :background_color, :accent_color, :background_image_url, :tagline, { highlights: [] } ])
     end
   end

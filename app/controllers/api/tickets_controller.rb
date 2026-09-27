@@ -14,7 +14,7 @@ module Api
           return render json: { error: "Request key already used" }, status: :conflict unless existing.event_id == event.id
           return render json: existing.api_attributes
         end
-        unless event.ticketing_enabled && event.status == "published" && event.start_at > Time.current
+        unless event.access_type == "ticketed" && event.ticketing_enabled && event.status == "published" && event.start_at > Time.current
           return render json: { error: "This event is not accepting reservations" }, status: :unprocessable_entity
         end
         unless event.price_from.zero?

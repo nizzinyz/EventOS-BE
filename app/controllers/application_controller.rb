@@ -17,6 +17,11 @@ class ApplicationController < ActionController::API
 
   private
 
+  def require_admin!
+    return if current_user&.admin?
+    render json: { error: "Admin access is required" }, status: :forbidden
+  end
+
   # Returns the currently authenticated user from the Devise-JWT token.
   # Available in every controller as `current_user` (provided by Devise).
 

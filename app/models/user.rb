@@ -35,9 +35,11 @@ class User < ApplicationRecord
   has_many :venue_bookings, dependent: :restrict_with_error
   has_many :orders, dependent: :restrict_with_error
   has_many :booking_requests, dependent: :restrict_with_error
+  has_many :event_members, dependent: :destroy
 
   # ── Validations ──────────────────────────────────────────────────────────────
   validates :first_name, :last_name, presence: true
+  validates :platform_role, inclusion: { in: %w[user admin] }
   validates :bio, length: { maximum: 1000 }
   validates :city, length: { maximum: 100 }
 
@@ -54,6 +56,10 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}".strip
+  end
+
+  def admin?
+    platform_role == "admin"
   end
 
   # OAuth-only accounts carry NO password at all: OauthUserService builds the
@@ -84,6 +90,7 @@ class User < ApplicationRecord
       confirmed:        confirmed?,
       confirmation_required: confirmation_required?,
       linked_providers: oauth_identities.map(&:provider),
+      platform_role: platform_role,
       created_at:       created_at
     }
   end

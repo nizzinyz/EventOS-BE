@@ -5,7 +5,7 @@ class VenueSlotsTest < ActionDispatch::IntegrationTest
     Rails.configuration.x.local_preview = true
     @owner = User.create!(email: "owner-#{SecureRandom.hex(5)}@example.com", first_name: "Host", last_name: "Member", password: "Testing123!", confirmed_at: Time.current)
     @buyer = User.create!(email: "buyer-#{SecureRandom.hex(5)}@example.com", first_name: "Buyer", last_name: "Member", password: "Testing123!", confirmed_at: Time.current)
-    @venue = Venue.create!(owner: @owner, name: "Slot hall", city: "Cape Town", address: "1 Main Road", capacity: 20, price_from: 1000, booking_enabled: true)
+    @venue = Venue.create!(owner: @owner, name: "Slot hall", city: "Cape Town", address: "1 Main Road", capacity: 20, price_from: 1000, booking_enabled: true, verification_status: "verified")
     @date = 7.days.from_now.in_time_zone("Africa/Johannesburg").to_date
     @start = @venue.slots_on(@date).first[:startAt]
   end
