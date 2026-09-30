@@ -10,7 +10,10 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     # In development allow the local frontend.
     # In production set CORS_ALLOWED_ORIGINS to a comma-separated list of
     # allowed origins, e.g. "https://app.example.com,https://www.example.com"
-    allowed = ENV.fetch("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006")
+    allowed = ENV.fetch(
+      "CORS_ALLOWED_ORIGINS",
+      "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006,http://localhost,https://localhost,capacitor://localhost",
+    )
     origins allowed.split(",").map(&:strip)
 
     resource "*",
