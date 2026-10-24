@@ -72,6 +72,8 @@ COPY --chown=rails:rails --from=build /rails /rails
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
+# Thruster accepts the public connection on port 80 and proxies to Puma on 3000.
+# Render sets PORT for its services, so explicitly keep Puma on Thruster's
+# expected internal upstream port.
 EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["./bin/thrust", "./bin/rails", "server", "-p", "3000"]
