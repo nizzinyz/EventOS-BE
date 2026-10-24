@@ -103,7 +103,9 @@ lapa_cinema = demo_event(organizer, zwartkop_lapa,
   status: "published", access_type: "ticketed", age_rating: "13_plus", visibility: "public",
   poster_config: { "template" => "neon", "palette" => "electric", "background" => "gradient", "tagline" => "Bring a blanket", "highlights" => ["Mock event", "Open-air", "13+"] })
 
-[[flagship, scanner, "scanner"], [flagship, manager, "event_manager"], [invitation, manager, "viewer"]].each do |event, user, role|
+[[flagship, scanner, "scanner"], [flagship, manager, "event_manager"], [invitation, manager, "viewer"],
+ [lapa_market, scanner, "scanner"], [lapa_cinema, scanner, "scanner"],
+ [lapa_market, manager, "event_manager"], [lapa_cinema, manager, "event_manager"]].each do |event, user, role|
   membership = EventMember.find_or_initialize_by(event: event, user: user)
   membership.update!(role: role)
 end
