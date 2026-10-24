@@ -10,7 +10,7 @@ gem "puma", ">= 5.0"
 # gem "jbuilder"
 
 # Authentication
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 gem "devise-jwt", "~> 0.12"
 
 # OAuth Providers
