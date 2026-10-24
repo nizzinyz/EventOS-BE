@@ -2,6 +2,7 @@ module Api
   module Auth
     class PasswordsController < Devise::PasswordsController
       respond_to :json
+      rate_limit to: 5, within: 1.hour, only: :create
 
       # POST /api/auth/password
       # Body: { user: { email: "..." } }

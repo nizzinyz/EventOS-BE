@@ -10,14 +10,14 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     # In development allow the local frontend.
     # In production set CORS_ALLOWED_ORIGINS to a comma-separated list of
     # allowed origins, e.g. "https://app.example.com,https://www.example.com"
-    allowed = ENV.fetch(
-      "CORS_ALLOWED_ORIGINS",
-      "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006,http://localhost,https://localhost,capacitor://localhost",
-    )
+    default_origins = "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006,http://localhost,https://localhost,capacitor://localhost"
+    allowed = ENV.fetch("CORS_ALLOWED_ORIGINS", Rails.env.production? ? "" : default_origins)
+    raise "CORS_ALLOWED_ORIGINS must be set in production" if Rails.env.production? && allowed.blank?
+
     origins allowed.split(",").map(&:strip)
 
     resource "*",
-      headers: :any,
+      headers: ["Authorization", "Content-Type", "Accept", "Origin"],
       expose:  ["Authorization"],   # expose JWT token header to the client
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
   end

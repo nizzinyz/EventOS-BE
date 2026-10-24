@@ -42,6 +42,7 @@ class User < ApplicationRecord
   validates :platform_role, inclusion: { in: %w[user admin] }
   validates :bio, length: { maximum: 1000 }
   validates :city, length: { maximum: 100 }
+  validate :password_strength, if: -> { password.present? }
 
   # ── Callbacks ────────────────────────────────────────────────────────────────
   before_validation :set_public_id, on: :create
@@ -103,5 +104,11 @@ class User < ApplicationRecord
 
   def set_public_id
     self.public_id ||= SecureRandom.uuid
+  end
+
+  def password_strength
+    return if password.match?(/\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,128}\z/)
+
+    errors.add(:password, "must be at least 12 characters and include upper-case, lower-case, number, and symbol")
   end
 end

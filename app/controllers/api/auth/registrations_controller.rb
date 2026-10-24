@@ -2,6 +2,7 @@ module Api
   module Auth
     class RegistrationsController < Devise::RegistrationsController
       respond_to :json
+      rate_limit to: 5, within: 1.hour, only: :create
 
       # POST /api/auth
       # Body: { user: { email, password, password_confirmation, first_name, last_name,
