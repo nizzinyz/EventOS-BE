@@ -39,6 +39,11 @@ private_start = zone.parse("#{18.days.from_now.to_date.iso8601} 16:00")
 community_start = zone.parse("#{21.days.from_now.to_date.iso8601} 10:00")
 lapa_market_start = zone.parse("#{28.days.from_now.to_date.iso8601} 11:00")
 lapa_cinema_start = zone.parse("#{30.days.from_now.to_date.iso8601} 18:00")
+glass_showcase_start = zone.parse("#{32.days.from_now.to_date.iso8601} 16:00")
+river_festival_start = zone.parse("#{35.days.from_now.to_date.iso8601} 12:00")
+tayfin_conference_start = zone.parse("#{38.days.from_now.to_date.iso8601} 09:00")
+tree_tops_wedding_start = zone.parse("#{41.days.from_now.to_date.iso8601} 15:00")
+velmore_summit_start = zone.parse("#{45.days.from_now.to_date.iso8601} 08:00")
 
 rooftop = demo_venue(venue_owner,
   name: "Demo Skyline Rooftop", city: "Johannesburg", province: "Gauteng", address: "88 Commissioner Street",
@@ -65,6 +70,47 @@ zwartkop_lapa = demo_venue(venue_owner,
   booking_enabled: true, ticketing_enabled: true, opening_time: "07:00", closing_time: "19:00", slot_minutes: 180,
   setup_buffer_minutes: 60, cleanup_buffer_minutes: 60, blocked_dates: [], blocked_periods: [],
   latitude: -25.836733, longitude: 28.124280, verification_status: "verified")
+
+glass_venue = demo_venue(venue_owner,
+  name: "Mock: The Glass Venue", city: "Centurion", province: "Gauteng", address: "151A Baard Rd, Raslouw",
+  description: "Mock owner-onboarding listing based on the public Glass Venue location. Capacity, pricing and packages are sample data pending owner confirmation.",
+  capacity: 180, price_from: 15_000, image_url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3",
+  categories: ["Weddings", "Corporate", "Celebrations"], amenities: ["Glass hall", "Parking", "Exclusive use"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "08:00", closing_time: "23:00", slot_minutes: 240,
+  setup_buffer_minutes: 120, cleanup_buffer_minutes: 90, blocked_dates: [], blocked_periods: [],
+  latitude: -25.84574, longitude: 28.12161, verification_status: "verified")
+
+at_the_river = demo_venue(venue_owner,
+  name: "Mock: At The River", city: "Centurion", province: "Gauteng", address: "R55 & 799 Wierda Rd, Zwartkop 356-Jr",
+  description: "Mock owner-onboarding listing based on At The River's public Centurion venue information. Sample pricing is for product testing only.",
+  capacity: 1_200, price_from: 25_000, image_url: "https://images.unsplash.com/photo-1507504031003-b417219a0fde",
+  categories: ["Weddings", "Festivals", "Conferences"], amenities: ["Gardens", "Wi-Fi", "Secure parking", "In-house catering"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "08:00", closing_time: "23:00", slot_minutes: 240,
+  setup_buffer_minutes: 120, cleanup_buffer_minutes: 120, blocked_dates: [], blocked_periods: [], verification_status: "verified")
+
+tayfin_royale = demo_venue(venue_owner,
+  name: "Mock: Tayfin Royale", city: "Centurion", province: "Gauteng", address: "Cnr Willem Botha St & Wierda Rd, Eldoraigne",
+  description: "Mock owner-onboarding listing representing Tayfin Royale's published conference and wedding facilities. Sample pricing is for product testing only.",
+  capacity: 500, price_from: 8_500, image_url: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3",
+  categories: ["Conferences", "Weddings", "Corporate"], amenities: ["Air conditioning", "Projectors", "Secure parking", "Wi-Fi", "Catering"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "07:00", closing_time: "23:00", slot_minutes: 180,
+  setup_buffer_minutes: 90, cleanup_buffer_minutes: 90, blocked_dates: [], blocked_periods: [], verification_status: "verified")
+
+whispering_tree_tops = demo_venue(venue_owner,
+  name: "Mock: Whispering Tree Tops", city: "Centurion", province: "Gauteng", address: "222 End Street, Clubview, Lyttelton AH",
+  description: "Mock owner-onboarding listing based on the public Whispering Tree Tops location. Capacity and pricing are sample data pending owner confirmation.",
+  capacity: 120, price_from: 12_000, image_url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed",
+  categories: ["Weddings", "Celebrations", "Outdoor"], amenities: ["River setting", "Fairy lights", "Catering", "Wheelchair access"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "08:00", closing_time: "22:00", slot_minutes: 240,
+  setup_buffer_minutes: 120, cleanup_buffer_minutes: 90, blocked_dates: [], blocked_periods: [], verification_status: "verified")
+
+velmore = demo_venue(venue_owner,
+  name: "Mock: Velmoré Hotel & Spa", city: "Erasmia", province: "Gauteng", address: "96 Main Road, Mooiplaats 355-Jr",
+  description: "Mock owner-onboarding listing based on Velmoré's public estate and conference information. Sample pricing is for product testing only.",
+  capacity: 1_300, price_from: 35_000, image_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+  categories: ["Conferences", "Weddings", "Accommodation"], amenities: ["Accommodation", "Halal catering", "Gardens", "Breakaway rooms", "Spa"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "07:00", closing_time: "23:00", slot_minutes: 240,
+  setup_buffer_minutes: 120, cleanup_buffer_minutes: 120, blocked_dates: [], blocked_periods: [], verification_status: "verified")
 
 # Book venue first, then create the event with that booking. This exercises the
 # intentional VenueBooking != Event relationship.
@@ -103,9 +149,43 @@ lapa_cinema = demo_event(organizer, zwartkop_lapa,
   status: "published", access_type: "ticketed", age_rating: "13_plus", visibility: "public",
   poster_config: { "template" => "neon", "palette" => "electric", "background" => "gradient", "tagline" => "Bring a blanket", "highlights" => ["Mock event", "Open-air", "13+"] })
 
+glass_showcase = demo_event(organizer, glass_venue,
+  title: "Demo: Glass Venue Wedding Showcase", description: "Mock event for testing a venue's lead-to-booking workflow.", category: "Weddings",
+  start_at: glass_showcase_start, end_at: glass_showcase_start + 5.hours, capacity: 180, price_from: 150,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "luxury", "palette" => "sunset", "background" => "solid", "tagline" => "See the space, plan the day", "highlights" => ["Mock event", "Wedding", "Venue tour"] })
+
+river_festival = demo_event(organizer, at_the_river,
+  title: "Demo: At The River Summer Festival", description: "Mock large-format event for discovery and booking-flow testing.", category: "Music",
+  start_at: river_festival_start, end_at: river_festival_start + 9.hours, capacity: 1_200, price_from: 220,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "festival", "palette" => "emerald", "background" => "gradient", "tagline" => "One day by the river", "highlights" => ["Mock event", "Outdoor", "All ages"] })
+
+tayfin_conference = demo_event(organizer, tayfin_royale,
+  title: "Demo: Tayfin Business Summit", description: "Mock corporate event for testing layouts, capacity and venue enquiries.", category: "Business",
+  start_at: tayfin_conference_start, end_at: tayfin_conference_start + 8.hours, capacity: 400, price_from: 450,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "minimal", "palette" => "monochrome", "background" => "solid", "tagline" => "Ideas with room to grow", "highlights" => ["Mock event", "Conference", "Corporate"] })
+
+tree_tops_wedding = demo_event(organizer, whispering_tree_tops,
+  title: "Demo: Whispering Tree Tops Wedding Fair", description: "Mock intimate wedding event for tester discovery and venue workflows.", category: "Weddings",
+  start_at: tree_tops_wedding_start, end_at: tree_tops_wedding_start + 6.hours, capacity: 120, price_from: 100,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "luxury", "palette" => "sunset", "background" => "gradient", "tagline" => "A river-side celebration", "highlights" => ["Mock event", "Wedding", "Venue tour"] })
+
+velmore_summit = demo_event(organizer, velmore,
+  title: "Demo: Velmoré Leadership Summit", description: "Mock residential conference event for enterprise venue testing.", category: "Business",
+  start_at: velmore_summit_start, end_at: velmore_summit_start + 9.hours, capacity: 1_000, price_from: 650,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "minimal", "palette" => "emerald", "background" => "solid", "tagline" => "Meet, stay, build", "highlights" => ["Mock event", "Summit", "Residential"] })
+
 [[flagship, scanner, "scanner"], [flagship, manager, "event_manager"], [invitation, manager, "viewer"],
  [lapa_market, scanner, "scanner"], [lapa_cinema, scanner, "scanner"],
- [lapa_market, manager, "event_manager"], [lapa_cinema, manager, "event_manager"]].each do |event, user, role|
+ [glass_showcase, scanner, "scanner"], [river_festival, scanner, "scanner"], [tayfin_conference, scanner, "scanner"],
+ [tree_tops_wedding, scanner, "scanner"], [velmore_summit, scanner, "scanner"],
+ [lapa_market, manager, "event_manager"], [lapa_cinema, manager, "event_manager"],
+ [glass_showcase, manager, "event_manager"], [river_festival, manager, "event_manager"], [tayfin_conference, manager, "event_manager"],
+ [tree_tops_wedding, manager, "event_manager"], [velmore_summit, manager, "event_manager"]].each do |event, user, role|
   membership = EventMember.find_or_initialize_by(event: event, user: user)
   membership.update!(role: role)
 end
