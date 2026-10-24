@@ -10,11 +10,12 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     # In development allow the local frontend.
     # In production set CORS_ALLOWED_ORIGINS to a comma-separated list of
     # allowed origins, e.g. "https://app.example.com,https://www.example.com"
-    default_origins = "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006,http://localhost,https://localhost,capacitor://localhost"
-    allowed = ENV.fetch("CORS_ALLOWED_ORIGINS", Rails.env.production? ? "" : default_origins)
-    raise "CORS_ALLOWED_ORIGINS must be set in production" if Rails.env.production? && allowed.blank?
+    development_origins = "http://localhost:3000,http://localhost:5173,http://localhost:8081,http://localhost:19006,http://localhost,https://localhost,capacitor://localhost"
+    hosted_origins = ["https://roam-28292.web.app", "https://roam-28292.firebaseapp.com"]
+    configured_origins = ENV.fetch("CORS_ALLOWED_ORIGINS", "").split(",").map { |origin| origin.strip.delete_suffix("/") }.reject(&:blank?)
+    allowed_origins = Rails.env.production? ? (hosted_origins + configured_origins).uniq : development_origins.split(",")
 
-    origins allowed.split(",").map(&:strip)
+    origins allowed_origins
 
     resource "*",
       headers: ["Authorization", "Content-Type", "Accept", "Origin"],
