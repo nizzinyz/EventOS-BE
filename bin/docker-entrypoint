@@ -1,8 +1,15 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+# If running the Rails server then create or migrate the existing database.
+# Server options (such as "-p 3000" for Thruster) can follow "server".
+if [[ " $* " == *" ./bin/rails server "* ]]; then
   ./bin/rails db:prepare
+
+  # Render tester environments can opt in to the repeatable demo accounts and
+  # content. The seed file is idempotent, so this is safe on later deploys.
+  if [ "${SEED_DEMO_DATA}" = "true" ]; then
+    ./bin/rails db:seed
+  fi
 fi
 
 exec "${@}"
