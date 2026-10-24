@@ -15,7 +15,7 @@ gem "devise-jwt", "~> 0.12"
 
 # OAuth Providers
 gem "omniauth", "~> 2.1"
-gem "omniauth-google-oauth2", "~> 1.1"        # Google / Gmail
+gem "omniauth-google-oauth2", "~> 1.2"        # Google / Gmail
 gem "omniauth-apple", "~> 1.0"                # Apple Sign In
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
