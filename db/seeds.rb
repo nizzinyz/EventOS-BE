@@ -37,6 +37,8 @@ zone = ActiveSupport::TimeZone["Africa/Johannesburg"]
 flagship_start = zone.parse("#{14.days.from_now.to_date.iso8601} 18:00")
 private_start = zone.parse("#{18.days.from_now.to_date.iso8601} 16:00")
 community_start = zone.parse("#{21.days.from_now.to_date.iso8601} 10:00")
+lapa_market_start = zone.parse("#{28.days.from_now.to_date.iso8601} 11:00")
+lapa_cinema_start = zone.parse("#{30.days.from_now.to_date.iso8601} 18:00")
 
 rooftop = demo_venue(venue_owner,
   name: "Demo Skyline Rooftop", city: "Johannesburg", province: "Gauteng", address: "88 Commissioner Street",
@@ -54,6 +56,15 @@ garden = demo_venue(venue_owner,
   opening_time: "08:00", closing_time: "22:00", slot_minutes: 120, setup_buffer_minutes: 90,
   cleanup_buffer_minutes: 60, blocked_dates: [],
   blocked_periods: [{ "startAt" => (private_start + 2.hours).iso8601, "endAt" => (private_start + 4.hours).iso8601 }], verification_status: "verified")
+
+zwartkop_lapa = demo_venue(venue_owner,
+  name: "Zwartkop Lapa Resort", city: "Centurion", province: "Gauteng", address: "Wierda Rd, Zwartkop 356-Jr",
+  description: "A City of Tshwane outdoor lapa resort on the Hennops River, suited to picnics, camping and group functions. Demo listing for tester workflows; confirm availability and pricing with the venue.",
+  capacity: 150, price_from: 0, image_url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+  categories: ["Outdoor", "Weddings", "Community"], amenities: ["Lapa", "Braai facilities", "Picnic areas", "Parking"],
+  booking_enabled: true, ticketing_enabled: true, opening_time: "07:00", closing_time: "19:00", slot_minutes: 180,
+  setup_buffer_minutes: 60, cleanup_buffer_minutes: 60, blocked_dates: [], blocked_periods: [],
+  latitude: -25.836733, longitude: 28.124280, verification_status: "verified")
 
 # Book venue first, then create the event with that booking. This exercises the
 # intentional VenueBooking != Event relationship.
@@ -79,6 +90,18 @@ guest_list = demo_event(organizer, garden,
   category: "Business", start_at: community_start, end_at: community_start + 3.hours, capacity: 60, price_from: 0,
   ticketing_enabled: false, status: "published", access_type: "guest_list", age_rating: "13_plus", visibility: "unlisted",
   poster_config: { "template" => "festival", "palette" => "emerald", "background" => "gradient", "tagline" => "Ideas over breakfast", "highlights" => ["Unlisted", "Guest list"] })
+
+lapa_market = demo_event(organizer, zwartkop_lapa,
+  title: "Demo: Zwartkop Riverside Market", description: "A mock outdoor market event for testing a real Centurion venue listing, discovery and ticket flows.",
+  category: "Community", start_at: lapa_market_start, end_at: lapa_market_start + 6.hours, capacity: 150, price_from: 80,
+  status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
+  poster_config: { "template" => "festival", "palette" => "emerald", "background" => "gradient", "tagline" => "Local makers by the river", "highlights" => ["Mock event", "Outdoor", "All ages"] })
+
+lapa_cinema = demo_event(organizer, zwartkop_lapa,
+  title: "Demo: Lapa Open-Air Cinema", description: "A mock evening screening for testing event discovery, venue details and future payment work.",
+  category: "Entertainment", start_at: lapa_cinema_start, end_at: lapa_cinema_start + 4.hours, capacity: 120, price_from: 120,
+  status: "published", access_type: "ticketed", age_rating: "13_plus", visibility: "public",
+  poster_config: { "template" => "neon", "palette" => "electric", "background" => "gradient", "tagline" => "Bring a blanket", "highlights" => ["Mock event", "Open-air", "13+"] })
 
 [[flagship, scanner, "scanner"], [flagship, manager, "event_manager"], [invitation, manager, "viewer"]].each do |event, user, role|
   membership = EventMember.find_or_initialize_by(event: event, user: user)
