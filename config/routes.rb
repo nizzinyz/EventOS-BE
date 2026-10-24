@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       resource :reaction, only: [:show, :update], controller: "event_reactions"
     end
     resources :venue_bookings, only: [:index, :create]
+    get "owner_dashboard", to: "owner_dashboard#show"
     get "venues/:venue_id/slots", to: "venue_bookings#slots"
     resources :venues
     resources :venues, only: [] do
