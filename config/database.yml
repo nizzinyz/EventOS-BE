@@ -86,18 +86,15 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: eos_venues_be_production
-    username: eos_venues_be
-    password: <%= ENV["EOS_VENUES_BE_DATABASE_PASSWORD"] %>
+    # Supabase provides one Postgres database. Rails keeps the cache, queue and
+    # cable migration schemas separate while all four connections share this URL.
+    url: <%= ENV.fetch("DATABASE_URL") %>
   cache:
     <<: *primary_production
-    database: eos_venues_be_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: eos_venues_be_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: eos_venues_be_production_cable
     migrations_paths: db/cable_migrate
