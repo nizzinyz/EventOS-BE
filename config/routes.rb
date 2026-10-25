@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   # One-time code exchange: completes the OAuth flow without a JWT in any URL.
   # POST /api/auth/exchange  →  api/auth/exchanges#create
   post "api/auth/exchange", to: "api/auth/exchanges#create"
+  post "api/auth/auth0_session", to: "api/auth/sessions#auth0_session"
 
   # ── API resources ────────────────────────────────────────────────────────────
   namespace :api do

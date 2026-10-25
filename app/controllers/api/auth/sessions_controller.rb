@@ -1,6 +1,7 @@
 module Api
   module Auth
     class SessionsController < Devise::SessionsController
+      skip_before_action :authenticate_request!, only: :auth0_session
       respond_to :json
       rate_limit to: 10, within: 15.minutes, only: :create
 
@@ -17,6 +18,13 @@ module Api
       # Regenerates the user's jti, invalidating all outstanding tokens.
       def destroy
         super
+      end
+
+      def auth0_session
+        user = Auth0TokenService.user_from(request.authorization.to_s.delete_prefix("Bearer "))
+        render json: { data: user.api_attributes }
+      rescue JWT::DecodeError, KeyError, JSON::ParserError
+        render json: { error: "Invalid Auth0 access token" }, status: :unauthorized
       end
 
       private
