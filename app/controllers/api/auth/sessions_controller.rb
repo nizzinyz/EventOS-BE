@@ -1,7 +1,6 @@
 module Api
   module Auth
     class SessionsController < Devise::SessionsController
-      skip_before_action :authenticate_request!, only: :auth0_session
       respond_to :json
       rate_limit to: 10, within: 15.minutes, only: :create
 
