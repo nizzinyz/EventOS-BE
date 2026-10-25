@@ -6,8 +6,11 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
-  # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
-  config.eager_load = true
+  # The Render tester runs on a small free instance. Loading code lazily keeps
+  # startup reliable and avoids failing the whole API because of an optional
+  # integration class that is not needed by the health check. Set
+  # RAILS_EAGER_LOAD=true once the production service is sized accordingly.
+  config.eager_load = ENV.fetch("RAILS_EAGER_LOAD", "false") == "true"
 
   # Full error reports are disabled.
   config.consider_all_requests_local = false
