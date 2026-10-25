@@ -13,7 +13,9 @@ class OauthIdentity < ApplicationRecord
   validates :provider, :uid, presence: true
   validates :uid, uniqueness: { scope: :provider }
 
-  PROVIDERS = %w[google_oauth2 apple].freeze
+  # `auth0` represents the brokered identity used by the web client. The
+  # upstream Google identity remains managed by Auth0 and is never stored here.
+  PROVIDERS = %w[google_oauth2 apple auth0].freeze
   validates :provider, inclusion: { in: PROVIDERS }
 
   # Returns a human-readable provider label.
