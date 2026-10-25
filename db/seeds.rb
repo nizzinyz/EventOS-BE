@@ -165,7 +165,7 @@ tayfin_conference = demo_event(organizer, tayfin_royale,
   title: "Demo: Tayfin Business Summit", description: "Mock corporate event for testing layouts, capacity and venue enquiries.", category: "Business",
   start_at: tayfin_conference_start, end_at: tayfin_conference_start + 8.hours, capacity: 400, price_from: 450,
   status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
-  poster_config: { "template" => "minimal", "palette" => "monochrome", "background" => "solid", "tagline" => "Ideas with room to grow", "highlights" => ["Mock event", "Conference", "Corporate"] })
+  poster_config: { "template" => "luxury", "palette" => "sunset", "background" => "solid", "tagline" => "Ideas with room to grow", "highlights" => ["Mock event", "Conference", "Corporate"] })
 
 tree_tops_wedding = demo_event(organizer, whispering_tree_tops,
   title: "Demo: Whispering Tree Tops Wedding Fair", description: "Mock intimate wedding event for tester discovery and venue workflows.", category: "Weddings",
@@ -177,7 +177,7 @@ velmore_summit = demo_event(organizer, velmore,
   title: "Demo: Velmoré Leadership Summit", description: "Mock residential conference event for enterprise venue testing.", category: "Business",
   start_at: velmore_summit_start, end_at: velmore_summit_start + 9.hours, capacity: 1_000, price_from: 650,
   status: "published", access_type: "ticketed", age_rating: "all_ages", visibility: "public",
-  poster_config: { "template" => "minimal", "palette" => "emerald", "background" => "solid", "tagline" => "Meet, stay, build", "highlights" => ["Mock event", "Summit", "Residential"] })
+  poster_config: { "template" => "festival", "palette" => "emerald", "background" => "gradient", "tagline" => "Meet, stay, build", "highlights" => ["Mock event", "Summit", "Residential"] })
 
 [[flagship, scanner, "scanner"], [flagship, manager, "event_manager"], [invitation, manager, "viewer"],
  [lapa_market, scanner, "scanner"], [lapa_cinema, scanner, "scanner"],
