@@ -14,7 +14,7 @@ gem "devise", "~> 4.9"
 gem "devise-jwt", "~> 0.12"
 
 # OAuth Providers
-gem "omniauth", "~> 2.1"
+gem "omniauth", "~> 2.3"
 gem "omniauth-google-oauth2", "~> 1.1"        # Google / Gmail
 gem "omniauth-apple", "~> 1.0"                # Apple Sign In
 
