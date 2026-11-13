@@ -19,13 +19,25 @@ class ApplicationController < ActionController::API
 
   def authenticate_request!
     token = request.authorization.to_s.delete_prefix("Bearer ")
-    if token.present? && ENV["AUTH0_DOMAIN"].present? && token.split(".").length == 3
+    if auth0_token?(token)
       @auth0_user = Auth0TokenService.user_from(token)
     else
       authenticate_user!
     end
   rescue JWT::DecodeError, KeyError, JSON::ParserError
     render json: { error: "Invalid Auth0 access token" }, status: :unauthorized
+  end
+
+  # Auth0 and Devise both issue three-part JWTs. Route only tokens issued by
+  # our configured Auth0 tenant through Auth0 verification; Devise validates
+  # its own tokens through Warden.
+  def auth0_token?(token)
+    return false if token.blank? || ENV["AUTH0_DOMAIN"].blank?
+
+    payload, = JWT.decode(token, nil, false)
+    payload["iss"] == "https://#{ENV.fetch("AUTH0_DOMAIN")}/"
+  rescue JWT::DecodeError, JSON::ParserError
+    false
   end
 
   def current_user
